@@ -1,0 +1,5 @@
+mode: Mainline
+increment: Patch
+branches:
+  develop:
+    increment: Patch
