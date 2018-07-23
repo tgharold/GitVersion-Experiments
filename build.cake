@@ -5,7 +5,7 @@ var solutionFile = "./GitVersion-Experiments.sln";
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
-var buildDir = Directory("./src/Example/bin") + Directory(configuration);
+var buildDir = Directory("./artifacts") + Directory(configuration);
 
 Task("Clean")
     .Does(() =>
