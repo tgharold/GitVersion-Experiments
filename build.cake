@@ -50,9 +50,12 @@ Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll", new NUnit3Settings {
-        NoResults = true
-        });
+    XUnit2("./test/**/bin/" + configuration + "/*.Tests.dll", new XUnit2Settings()
+    {
+        Parallelism = ParallelismOption.All,
+        HtmlReport = true,
+        OutputDirectory = artifactsDir
+    });
 });
 
 Task("Default")
