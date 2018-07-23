@@ -54,7 +54,7 @@ Task("Run-Unit-Tests")
     {
         Parallelism = ParallelismOption.All,
         HtmlReport = true,
-        OutputDirectory = artifactsDir
+        OutputDirectory = buildDir
     });
 });
 
