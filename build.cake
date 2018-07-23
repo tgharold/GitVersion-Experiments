@@ -28,13 +28,21 @@ Task("Build")
     {
       // Use MSBuild
       MSBuild(solutionFile, settings =>
-        settings.SetConfiguration(configuration));
+        settings.SetConfiguration(configuration))
+            .WithProperty("TreatWarningsAsErrors", "True")
+            .WithProperty("DeployOnBuild", "True")
+            .SetVerbosity(Verbosity.Minimal)
+            .AddFileLogger());
     }
     else
     {
       // Use XBuild
       XBuild(solutionFile, settings =>
-        settings.SetConfiguration(configuration));
+        settings.SetConfiguration(configuration))
+            .WithProperty("TreatWarningsAsErrors", "True")
+            .WithProperty("DeployOnBuild", "True")
+            .SetVerbosity(Verbosity.Minimal)
+            .AddFileLogger());
     }
 });
 
