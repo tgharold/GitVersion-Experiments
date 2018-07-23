@@ -1,9 +1,9 @@
 
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
+var solutionFile = "./GitVersion-Experiments.sln";
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-var solutionFile = "./GitVersion-Experiments.sln";
 
 var buildDir = Directory("./src/Example/bin") + Directory(configuration);
 
