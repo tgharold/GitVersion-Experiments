@@ -1,6 +1,7 @@
 
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
 var solutionFile = "./GitVersion-Experiments.sln";
+var solutionDir = new FilePath(solutionFile).GetDirectory();
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -59,18 +60,38 @@ Task("Run-Unit-Tests")
 });
 
 Task("Package")
-    .IsDependentOn("Run-Tests")
+    .IsDependentOn("Run-Unit-Tests")
     .Does(() =>
 {
-    NuGetPack("./src/ExampleProject/ExampleProject.csproj", new NuGetPackSettings
-    {
+    var projects = GetFiles(solutionDir + "/**/*.csproj")
+        - GetFiles(solutionDir + "/**/*.Tests.csproj");
+
+    var buildVersion = EnvironmentVariable("GitVersion_NuGetVersionV2");
+    var buildAssemblyVersion = EnvironmentVariable("GitVersion_NuGetVersionV2");
+    var buildFileVersion = EnvironmentVariable("GitVersion_NuGetVersionV2");
+    var buildAssemblyInformationalVersion = EnvironmentVariable("GitVersion_InformationalVersion");
+
+    var settings = new DotNetCorePackSettings {
+        NoBuild = true,
+        Configuration = configuration,
         OutputDirectory = buildDir,
-        Version = EnvironmentVariable("GitVersion_NuGetVersionV2"),
-        Properties = new Dictionary<string, string>
-        {
-            { "Configuration", configuration }
+        ArgumentCustomization = (args) => {
+            //if (BuildParameters.ShouldBuildNugetSourcePackage)
+            //{
+            //    args.Append("--include-source");
+            //}
+            return args
+                .Append("/p:Version={0}", buildVersion)
+                .Append("/p:AssemblyVersion={0}", buildAssemblyVersion)
+                .Append("/p:FileVersion={0}", buildFileVersion)
+                .Append("/p:AssemblyInformationalVersion={0}", buildAssemblyInformationalVersion);
         }
-    });
+    };
+
+    foreach (var project in projects)
+    {
+        DotNetCorePack(project.ToString(), settings);
+    }
 });
 
 Task("Default")
