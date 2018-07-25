@@ -1,10 +1,6 @@
 # GitVersion-Experiments
 
-Experimenting with the various GitVersion modes
-
-# Setup
-
-I'm using .NET Core, but running GitVersion 4.0.0-beta.12 on Windows.  Assuming that you could get GitVersion 4.x on another environment, you could probably test there as well.
+Experimenting with the various GitVersion modes, plus experimentation with .NET Core and Cake.
 
 # Reference links:
 
