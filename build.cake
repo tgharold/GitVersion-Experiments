@@ -58,6 +58,21 @@ Task("Run-Unit-Tests")
     });
 });
 
+Task("Package")
+    .IsDependentOn("Run-Tests")
+    .Does(() =>
+{
+    NuGetPack("./src/ExampleProject/ExampleProject.csproj", new NuGetPackSettings
+    {
+        OutputDirectory = buildDir,
+        Version = EnvironmentVariable("GitVersion_NuGetVersionV2"),
+        Properties = new Dictionary<string, string>
+        {
+            { "Configuration", configuration }
+        }
+    });
+});
+
 Task("Default")
     .IsDependentOn("Run-Unit-Tests");
 
