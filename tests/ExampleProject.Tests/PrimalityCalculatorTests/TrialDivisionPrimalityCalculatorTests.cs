@@ -9,8 +9,8 @@ namespace NearestPrimeNumber.Tests.PrimalityCalculatorTests
     {
         private readonly IPrimalityCalculator _sut;
 
-        public static readonly IReadOnlyCollection<object[]> TinyPrimes = TestData.TinyPrimes;
-        public static readonly IReadOnlyCollection<object[]> SmallPrimes = TestData.SmallPrimes;
+        public static readonly IReadOnlyCollection<object[]> TinyPrimes = PrimalityTestData.TinyPrimes;
+        public static readonly IReadOnlyCollection<object[]> SmallPrimes = PrimalityTestData.SmallPrimes;
 
         public TrialDivisionPrimalityCalculatorTests()
         {
