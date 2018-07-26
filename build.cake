@@ -17,6 +17,9 @@ var buildAssemblyVersion = EnvironmentVariable("GitVersion_NuGetVersionV2");
 var buildFileVersion = EnvironmentVariable("GitVersion_NuGetVersionV2");
 var buildAssemblyInformationalVersion = EnvironmentVariable("GitVersion_InformationalVersion");
 
+// basic sanity checks
+if (!FileExists(solutionFile)) throw new Exception($"File not found: {solutionFile}");
+
 Task("Clean")
     .Does(() =>
     {
