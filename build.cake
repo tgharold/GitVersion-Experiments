@@ -8,8 +8,8 @@ var shouldBuildNugetSourcePackage = true;
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var buildDir = Directory("./artifacts") + Directory(configuration);
-var projectsPattern = "/**/*.csproj";
-var testsPattern = "/**/*.Tests.csproj";
+var projectsPattern = "**/*.csproj";
+var testProjectsPattern = "**/*Tests.csproj";
 
 // Versioning
 var buildVersion = EnvironmentVariable("GitVersion_NuGetVersionV2");
