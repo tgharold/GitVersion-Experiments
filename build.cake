@@ -1,5 +1,7 @@
 
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
+#tool "nuget:?package=GitVersion.CommandLine"
+
 var solutionFile = "./GitVersion-Experiments.sln";
 var solutionDir = new FilePath(solutionFile).GetDirectory();
 var shouldBuildNugetSourcePackage = true;
@@ -35,15 +37,6 @@ Task("Restore-NuGet-Packages")
     {
         NuGetRestore(solutionFile);
     });
-
-Task("GetVersionInfo")
-    .Does(() =>
-{
-    var result = GitVersion(new GitVersionSettings {
-        // UpdateAssemblyInfo = true
-    });
-    // Use result for building nuget packages, setting build server version, etc...
-});
 
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
@@ -82,8 +75,21 @@ Task("Run-Unit-Tests")
         }
     });    
 
-Task("Package")
+Task("GitVersion")
     .IsDependentOn("Run-Unit-Tests")
+    .Does(() =>
+{
+    var result = GitVersion(new GitVersionSettings {
+        // UpdateAssemblyInfo = true
+    });
+    buildVersion = result.NuGetVersionV2;
+    buildAssemblyVersion = result.NuGetVersionV2;
+    buildFileVersion = result.NuGetVersionV2;
+    buildAssemblyInformationalVersion = result.InformationalVersion;
+});
+
+Task("Package")
+    .IsDependentOn("GitVersion")
     .Does(() =>
     {
         Debug($"solutionDir: {solutionDir}");
