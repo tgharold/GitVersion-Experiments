@@ -53,9 +53,12 @@ Task("Run-Unit-Tests")
          * $ dotnet test --no-build --configuration=Release .\tests\ExampleProject.Tests\
          */
 
-        var projects = GetFiles(solutionDir + testsPattern);
+        Debug($"solutionDir: {solutionDir}");
+        Debug($"testProjectsPattern: {testProjectsPattern}");
+        var projects = GetFiles(solutionDir + testProjectsPattern);
         foreach(var project in projects)
         {
+            Debug($"Project: {project}");
             DotNetCoreTest(
                 project.FullPath,
                 new DotNetCoreTestSettings()
@@ -71,8 +74,12 @@ Task("Package")
     .IsDependentOn("Run-Unit-Tests")
     .Does(() =>
     {
+        Debug($"solutionDir: {solutionDir}");
+        Debug($"projectsPattern: {projectsPattern}");
+        Debug($"testProjectsPattern: {testProjectsPattern}");
+
         var projects = GetFiles(solutionDir + projectsPattern)
-            - GetFiles(solutionDir + testsPattern);
+            - GetFiles(solutionDir + testProjectsPattern);
 
         var settings = new DotNetCorePackSettings {
             NoBuild = true,
@@ -93,6 +100,7 @@ Task("Package")
 
         foreach (var project in projects)
         {
+            Debug($"Project: {project}");
             DotNetCorePack(project.ToString(), settings);
         }
     });
