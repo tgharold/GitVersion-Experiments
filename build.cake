@@ -20,6 +20,9 @@ var buildAssemblyInformationalVersion = EnvironmentVariable("GitVersion_Informat
 // basic sanity checks
 if (!FileExists(solutionFile)) throw new Exception($"File not found: {solutionFile}");
 
+Task("Default")
+    .IsDependentOn("Package");
+
 Task("Clean")
     .Does(() =>
     {
@@ -104,8 +107,5 @@ Task("Package")
             DotNetCorePack(project.ToString(), settings);
         }
     });
-
-Task("Default")
-    .IsDependentOn("Run-Unit-Tests");
 
 RunTarget(target);
