@@ -12,10 +12,10 @@ var projectsPattern = "**/*.csproj";
 var testProjectsPattern = "**/*Tests.csproj";
 
 // Versioning
-var buildVersion = EnvironmentVariable("GitVersion_NuGetVersionV2");
-var buildAssemblyVersion = EnvironmentVariable("GitVersion_NuGetVersionV2");
-var buildFileVersion = EnvironmentVariable("GitVersion_NuGetVersionV2");
-var buildAssemblyInformationalVersion = EnvironmentVariable("GitVersion_InformationalVersion");
+var buildVersion = "0.0.0";
+var buildAssemblyVersion = buildVersion;
+var buildFileVersion = buildVersion;
+var buildAssemblyInformationalVersion = buildVersion;
 
 // basic sanity checks
 if (!FileExists(solutionFile)) throw new Exception($"File not found: {solutionFile}");
@@ -35,6 +35,15 @@ Task("Restore-NuGet-Packages")
     {
         NuGetRestore(solutionFile);
     });
+
+Task("GetVersionInfo")
+    .Does(() =>
+{
+    var result = GitVersion(new GitVersionSettings {
+        // UpdateAssemblyInfo = true
+    });
+    // Use result for building nuget packages, setting build server version, etc...
+});
 
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
