@@ -1,5 +1,2 @@
-mode: Mainline
+mode: ContinuousDelivery
 increment: Patch
-branches:
-  develop:
-    increment: Patch
